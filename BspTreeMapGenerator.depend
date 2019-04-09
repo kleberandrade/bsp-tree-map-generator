@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1495496401 source:c:\users\kleber andrade\desktop\bsptreemapgenerator\main.c
+	<stdio.h>
+	<stdlib.h>
+	"random.h"
+	"polygon.h"
+	"bsptree.h"
+	"map.h"
+	"bsptree2map.h"
+
+1495474185 c:\users\kleber andrade\desktop\bsptreemapgenerator\map.h
+	<stdio.h>
+	<stdlib.h>
+
+1494908777 c:\users\kleber andrade\desktop\bsptreemapgenerator\point2.h
+
+1495049233 c:\users\kleber andrade\desktop\bsptreemapgenerator\container.h
+
+1495474185 c:\users\kleber andrade\desktop\bsptreemapgenerator\bsptree.h
+	"binarytree.h"
+	"polygon.h"
+	"random.h"
+
+1495059661 c:\users\kleber andrade\desktop\bsptreemapgenerator\resources.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+
+1495474162 c:\users\kleber andrade\desktop\bsptreemapgenerator\polygon.h
+	<stdio.h>
+
+1495474185 c:\users\kleber andrade\desktop\bsptreemapgenerator\binarytree.h
+	<stdio.h>
+	"polygon.h"
+
+1495474185 c:\users\kleber andrade\desktop\bsptreemapgenerator\random.h
+	<stdio.h>
+	<time.h>
+	<math.h>
+
+1495474185 c:\users\kleber andrade\desktop\bsptreemapgenerator\bsptree2map.h
+	"binarytree.h"
+	"map.h"
+	"polygon.h"
+
