@@ -10,6 +10,10 @@ Recursively divide a rectangle, carve a room in each leaf, then join sibling
 components with inclusive L-shaped corridors. Every floor cell is reachable
 from every other floor cell through four-direction movement.
 
+![Three real dungeon maps comparing subdivision depth and minimum room size](docs/images/dungeon-examples.svg)
+
+*Actual CLI output for seed 42. Dark cells are walls; green cells are walkable floor.*
+
 ## What is a BSP tree?
 
 **Binary Space Partitioning** recursively divides a region into two subregions.
@@ -22,6 +26,11 @@ so every region remains a rectangle on an integer tile grid.
 “Binary” describes the two children, not binary search over sorted keys.
 A BSP tree organizes **space**, whereas a binary search tree organizes values.
 It also differs from a quadtree, which divides a 2D region into four children.
+
+![Binary tree with one root, two child regions and four room leaves A through D](docs/images/bsp-tree.svg)
+
+*The four leaves match regions A–D in the generation walkthrough below. The tree
+is conceptual: this implementation stores its active path in recursive calls.*
 
 ## When did BSP trees appear, and what are they used for?
 
@@ -51,6 +60,13 @@ recursive spatial subdivision.
 
 ## How this generator works
 
+![Three stages: divide the interior into regions, carve one room in each leaf, and join sibling components](docs/images/partition-steps.svg)
+
+*Teaching schematic, not a trace of a particular seed. Dashed boundaries divide
+regions; they do not enforce walls. First connect A–B and C–D, then connect a
+representative floor cell from each subtree (A–C here).*
+
+
 1. **Validate and allocate.** Reserve a row-major map filled with walls. Keep a
    one-cell border outside the generation region.
 2. **Choose a split direction.** Pick horizontal or vertical using local random
@@ -65,6 +81,29 @@ recursive spatial subdivision.
    representative cells horizontally followed by vertically, including both
    endpoints. Return the first child's representative to the parent.
 6. **Return ownership.** The caller receives the flat map and eventually frees it.
+
+### Generation control flow
+
+```mermaid
+flowchart TD
+    A[Validate dimensions, depth and minimum room size] --> B{Valid input?}
+    B -->|No| X[Return NULL]
+    B -->|Yes| C[Allocate and fill map with walls]
+    C --> D{Allocation succeeded?}
+    D -->|No| X
+    D -->|Yes| E[Generate the interior region]
+    E --> F{Depth zero or no feasible split?}
+    F -->|Yes| G[Carve one room and return its center]
+    F -->|No| H[Split into two valid child regions]
+    H --> I[Recursively generate both child components]
+    I --> J[Connect their returned points with an L-shaped corridor]
+    J --> K[Return the first child point to the parent]
+    G --> L[When the root completes, return the owned map buffer]
+    K --> L
+```
+
+Each recursive child follows the same stop/split decision. The buffer is returned
+to the caller only after the root region finishes; child calls return floor points.
 
 ### Why every room is reachable
 
@@ -154,6 +193,8 @@ rooms is not guaranteed. The outer border is never carved.
 - `include/`: public library interface.
 - `examples/`: standalone library consumer and reproducible ASCII sample.
 - `tests/`: behavior and CLI checks.
+- `docs/images/`: versioned SVG walkthrough, tree and real-output gallery.
+- `tools/render_readme.py`: reproducible documentation image generator.
 - `legacy/`: original headers, Code::Blocks project and original sample map.
 
 The original Code::Blocks project remains together with its original relative
@@ -215,3 +256,18 @@ For a game integration, copy `BSP_FLOOR` cells into walkable tiles and `BSP_WALL
 cells into solid tiles before freeing the buffer. Entity placement, doors,
 room labels and minimum separating walls require additional game-specific rules;
 this API intentionally returns only terrain.
+
+## Regenerating the README images
+
+The SVGs are local repository assets with accessible titles/descriptions and no
+external image dependencies. The gallery renders real CLI output; the region and
+tree diagrams are explicitly labeled teaching schematics. To update them after
+changing the generator, use Python 3 (standard library only):
+
+```sh
+make
+python3 tools/render_readme.py
+```
+
+Review the resulting `docs/images/*.svg` changes with the matching code changes.
+The same seed can produce a different layout after an intentional algorithm change.

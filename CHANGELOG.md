@@ -44,3 +44,15 @@
   reasoning, complexity, trade-offs and executable parameter examples.
 - Verified `make test`, `make sanitize` and `git diff --check` successfully.
   No push or remote workflow execution was performed.
+
+## README diagrams and solution images
+
+- Added accessible, repository-local SVGs explaining the four-region binary
+  tree, partition/room/corridor stages and three real CLI parameter examples.
+  Schematics are labeled separately from actual generated maps.
+- Added a Mermaid control-flow diagram and explanations next to the relevant
+  README sections, plus reproducible image-generation instructions.
+- Added `tools/render_readme.py`, using Python's standard library and the built
+  CLI. Verified byte-identical regeneration, valid SVG XML and image links.
+- Inspected all three image previews locally; ran `make test` and
+  `git diff --check` successfully. Generation code was unchanged.
