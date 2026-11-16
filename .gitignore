@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Portable build and optional analysis output
+/build/
+/.metrics/
