@@ -28,3 +28,19 @@
   an ASCII CLI, and sanitizer-tested behavior.”
 - Verified six repository topics: ascii, binary-space-partitioning, bsp-tree, c,
   dungeon-generator, procedural-generation. No push, release, deploy or visibility change.
+
+## Organization and educational examples follow-up
+
+- Moved the production CLI from examples to `cli/`; separated local PRNG state
+  into private `src/random.h` and `src/random.c`. Named generation steps and
+  expanded formatting to make geometry, carving and orchestration readable.
+- Kept the bounded algorithm and public function signature. Exposed shared
+  dimension/depth/tile constants, documented ownership and input contracts.
+- Compared the 24x12 seed-42 output before and after refactoring byte for byte.
+- Added a runnable, error-checked library example and made its expected ASCII
+  output part of both normal and sanitized test targets.
+- Expanded the English README with BSP definitions, historical milestones,
+  linked research references, practical uses, generation steps, connectivity
+  reasoning, complexity, trade-offs and executable parameter examples.
+- Verified `make test`, `make sanitize` and `git diff --check` successfully.
+  No push or remote workflow execution was performed.
